@@ -20,7 +20,7 @@ const main = () => {
     this.swiperMainPosition = 0;
     this.containerWidth = 0;
     this.productWidth = 0;
-    this.productsToShow = 5;
+    this.productsToShow = 4;
     this.productList = [];
     this.lockPosition = 0;
   };
@@ -41,12 +41,12 @@ const main = () => {
       this.setProductWidth();
       let centralPosition;
       let swiperPosition;
-      if(model.productList.length%2 === 0) {
-        centralPosition = Math.ceil(model.productList.length / 2);
-        swiperPosition = Math.ceil((model.productList.length - model.productsToShow) / 2);
+      if(model.productsToShow%2 === 0) {
+        centralPosition = 1
+        swiperPosition = 0
       } else {
         centralPosition = Math.floor(model.productList.length / 2);
-        swiperPosition = 0;
+        swiperPosition = 1
       }
       selectors.brSwiperFocus = model.productList[centralPosition];
       selectors.brSwiperPrev = model.productList[centralPosition - 1];
@@ -56,7 +56,11 @@ const main = () => {
       selectors.brSwiperFocus.classList.add('focus');
       selectors.brSwiperPrev.classList.add('prev');      
       selectors.brSwiperNext.classList.add('next');
-      selectors.brSwiperWrapper.style.left = `-${model.productWidth * swiperPosition}px`;
+      if(model.productsToShow%2 === 0) {
+        selectors.brSwiperWrapper.style.left = `${(model.productWidth * swiperPosition) +  model.productWidth / 2}px`;
+      } else {
+        selectors.brSwiperWrapper.style.left = `-${(model.productWidth * swiperPosition) - model.productWidth / 2}px`; 
+      }
       this.createProductCTA(selectors.brSwiperFocus);
     };
     this.createProductCTA = (selector) => {
@@ -98,7 +102,7 @@ const main = () => {
         view.setStartingPosition()
       } else if ((e.target.innerWidth > 750)) {
         view.resetClasses();
-        model.productsToShow = 5;
+        model.productsToShow = 4;
         view.setStartingPosition()
       };
       const previousWidth = model.productWidth;

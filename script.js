@@ -75,7 +75,7 @@ var main = function main() {
     this.swiperMainPosition = 0;
     this.containerWidth = 0;
     this.productWidth = 0;
-    this.productsToShow = 5;
+    this.productsToShow = 4;
     this.productList = [];
     this.lockPosition = 0;
   })();
@@ -104,14 +104,12 @@ var main = function main() {
       var centralPosition;
       var swiperPosition;
 
-      if (model.productList.length % 2 === 0) {
-        centralPosition = Math.ceil(model.productList.length / 2);
-        swiperPosition = Math.ceil(
-          (model.productList.length - model.productsToShow) / 2
-        );
+      if (model.productsToShow % 2 === 0) {
+        centralPosition = 1;
+        swiperPosition = 0;
       } else {
         centralPosition = Math.floor(model.productList.length / 2);
-        swiperPosition = 0;
+        swiperPosition = 1;
       }
 
       selectors.brSwiperFocus = model.productList[centralPosition];
@@ -126,10 +124,18 @@ var main = function main() {
       selectors.brSwiperFocus.classList.add("focus");
       selectors.brSwiperPrev.classList.add("prev");
       selectors.brSwiperNext.classList.add("next");
-      selectors.brSwiperWrapper.style.left = "-".concat(
-        model.productWidth * swiperPosition,
-        "px"
-      );
+
+      if (model.productsToShow % 2 === 0) {
+        selectors.brSwiperWrapper.style.left = "".concat(
+          model.productWidth * swiperPosition + model.productWidth / 2,
+          "px"
+        );
+      } else {
+        selectors.brSwiperWrapper.style.left = "-".concat(
+          model.productWidth * swiperPosition - model.productWidth / 2,
+          "px"
+        );
+      }
 
       _this.createProductCTA(selectors.brSwiperFocus);
     };
@@ -185,7 +191,7 @@ var main = function main() {
         view.setStartingPosition();
       } else if (e.target.innerWidth > 750) {
         view.resetClasses();
-        model.productsToShow = 5;
+        model.productsToShow = 4;
         view.setStartingPosition();
       }
 
